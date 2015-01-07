@@ -1,13 +1,13 @@
 #scenario1 navigate to order online page
-When(/^I am on the Dominos site/) do
+Given(/^I am on the Dominos site/) do
   visit 'http://www.dominos.com'
 end
 
-Then(/^the homepage loads/) do
+When(/^the homepage loads/) do
     expect(page).to have_selector('div#Dominos-HomePage')
 end
 
-When(/^I click order online link/) do
+And(/^I click order online link/) do
     click_link('Order Online')
 end
 
