@@ -48,29 +48,44 @@ When(/^I click Continue$/) do
   click_button('Continue')
 end
 
-Then(/^nearby dominos locations display$/) do
-  pending # express the regexp above with the code you wish you had
+Then(/^nearby locations page displays$/) do
+  expect(page).to have_css('#locationsResultsPage')
 end
 
-Then(/^I can click the button to order carryout$/) do
-  #expect(page).to have_css('.Based-On')
-  find('.based-on', :with => 'Nearby for Carryout / Pickup').visible?
+
+And(/^I can click the button to order carryout$/) do
+  #find(:xpath, "//div[@data-storeid='3031']/descendant::a[@data-type='Carryout’]").click #This returns syntax error
+  within ("[data-storeid='3031']") do
+  find('a.js-orderCarryoutNow.js-carryoutAvailable.btn.btn--block').click
+  end
 end
 
 
 #scenario4
 Given(/^I have selected a carry out location$/) do
-  pending # express the regexp above with the code you wish you had
+  visit ('https://order.dominos.com/en/pages/order/#/locations/search/?type=Carryout&c=prairivelle%2C%20LA%2070769&s=&locationName=')
+  within ("[data-storeid='3031']") do
+    find('a.js-orderCarryoutNow.js-carryoutAvailable.btn.btn--block').click
+  end
+
 end
 
 When(/^I choose popular items$/) do
-  pending # express the regexp above with the code you wish you had
+  find('a.qa-PastPopular.grid').click
 end
 
-When(/^I select a pizza$/) do
-  pending # express the regexp above with the code you wish you had
+When(/^I select a pepperoni pizza$/) do
+  find('a[href="#/order/variant/new?code=14SCREEN&toppings=P:1/1;1|X:1/1;1|C:1/1;1"]').click
 end
-
+And(/^I select a veggie pizza$/) do
+  find('a[href*="code=P12IREPV"]').click
+end
 Then(/^the cart is updated$/) do
-  pending # express the regexp above with the code you wish you had
+  within ('div#js-myOrderPage') do
+    expect(page).to have_content("Large (14\") Hand Tossed Pizza")
+    expect(page).to have_content("Medium (12\") Hand Tossed Pacific Veggie Pizza")
+  end
+end
+And(/^I can click checkout button$/) do
+  find('a.btn--checkout').click
 end
