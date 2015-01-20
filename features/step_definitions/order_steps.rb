@@ -1,6 +1,8 @@
+base_url='https://order.dominos.com/en/'
+
 #scenario1 navigate to order online page
 Given(/^I am on the Dominos site/) do
-  visit 'https://order.dominos.com/en/'
+  visit base_url
 end
 When(/^the homepage loads/) do
     expect(page).to have_selector(:id, 'homePage')
@@ -13,10 +15,9 @@ Then (/^the order page displays/) do
     expect(page).to have_content("Is this order for delivery or carryout?")
 end
 
-
 #scenario2 select carryout and enter address
-Given (/^I am on the Order Online page$/) do
-  visit 'https://order.dominos.com/en/pages/order/#/locations/search/'
+Given(/^I visit "(.*?)" url$/) do |url|
+    visit base_url+url
 end
 And (/^the delivery option is selected$/) do
   expect(page).to have_css('.Delivery.active')
@@ -51,8 +52,6 @@ end
 Then(/^nearby locations page displays$/) do
   expect(page).to have_css('#locationsResultsPage')
 end
-
-
 And(/^I can click the button to order carryout$/) do
   #find(:xpath, "//div[@data-storeid='3031']/descendant::a[@data-type='Carryout’]").click #This returns syntax error
   within ("[data-storeid='3031']") do
@@ -60,14 +59,12 @@ And(/^I can click the button to order carryout$/) do
   end
 end
 
-
-#scenario4
-Given(/^I have selected a carry out location$/) do
-  visit ('https://order.dominos.com/en/pages/order/#/locations/search/?type=Carryout&c=prairivelle%2C%20LA%2070769&s=&locationName=')
+#scenario3
+Given(/^I have selected a carryout location$/) do
+  visit base_url+'pages/order/#/locations/search/?type=Carryout&c=prairivelle%2C%20LA%2070769&s=&locationName='
   within ("[data-storeid='3031']") do
     find('a.js-orderCarryoutNow.js-carryoutAvailable.btn.btn--block').click
   end
-
 end
 
 When(/^I choose popular items$/) do
