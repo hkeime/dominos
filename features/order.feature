@@ -27,6 +27,5 @@ Scenario: Verify user select order multiple pizzas
   And I select a veggie pizza
   Then the cart is updated
   And I can click checkout button
-
-    @s4 @order
-Scenario: Verify check out page loads
+  When the check out page loads
+  Then the cart has my pizzas

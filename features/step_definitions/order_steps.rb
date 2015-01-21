@@ -86,3 +86,17 @@ end
 And(/^I can click checkout button$/) do
   find('a.btn--checkout').click
 end
+When(/^the check out page loads$/) do
+  visit base_url+'pages/order/#/checkout/'
+end
+Then(/^the cart has my pizzas$/) do
+  if
+    page.has_css?('h1.card__title.js-upsellHeader')==true
+    find('a.js-nothanks').click
+  else
+    within ('order-summary__item__title') do
+      expect(page).to have_content("Large (14\") Hand Tossed Pizza")
+      expect(page).to have_content("Medium (12\") Hand Tossed Pacific Veggie Pizza")
+    end
+  end
+end
